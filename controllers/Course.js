@@ -93,3 +93,36 @@ exports.createCourse = async (req, res) => {
     });
   }
 };
+
+//getAllCourses handler function
+
+exports.showAllCourses = async (req, res) => {
+  try {
+    const allCourses = await Course.find(
+      {},
+      {
+        courseName: true,
+        price: true,
+        thumbnail: true,
+        instructor: true,
+        ratingAndReview: true,
+        studentsEnrolled: true,
+      }
+    )
+      .populate("instructor")
+      .exec();
+
+    //return response
+    return res.status(200).json({
+      success: true,
+      message: "Fetched all courses data successfully! ",
+      data: allCourses,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Error while creating course",
+    });
+  }
+};
