@@ -3,6 +3,7 @@ const OTP = require("../models/");
 const otpGenerator = require("otp-generator");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const mailSender = require("../utils/mailSender");
 require("dotenv").config();
 
 //send OTP
@@ -230,3 +231,76 @@ exports,
       });
     }
   });
+
+//change Password
+exports.changePassword = async (req, res) => {
+  try {
+    //fetch data from body
+    const { email, oldPassword, newPassword, confirmNewPassword } =
+      requeest.body;
+
+    //validation
+    if (!email || !oldPassword || !newPassword || !confirmNewPassword) {
+      return res.status(403).json({
+        success: false,
+        message: "All fields are necessary! Please Retry",
+      });
+    }
+
+    const user = User.findOne({ email });
+    if (!user) {
+      return res.status(403).json({
+        success: false,
+        message: "User not registered, please register first!",
+      });
+    }
+
+    const passwordMatch = await bcrypt.compare(user.password, oldPassword);
+    if (!passwordMatch) {
+      return res.status(400).json({
+        success: false,
+        message: "Old password do not match",
+      });
+    }
+
+    if (newPassword !== confirmNewPassword) {
+      return res.status(400).status({
+        success: false,
+        message: "New passowords do not match",
+      });
+    }
+
+    //update password in DB
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    const result = await User.updateOne(
+      { email },
+      { $set: { password: hashedPassword } }
+    );
+    console.log("Password updated successfully!");
+
+    //send mail- password Updated
+    const emailTitle = "Password Update Notification";
+    const emailBody = `
+            <h1>Password Updated</h1>
+            <p>Hello,</p>
+            <p>Your password has been successfully updated. If you did not make this change, please contact support immediately.</p>
+            <p>Best Regards, <br> StudyMichi Inc</p>`;
+
+    // Send the email notification
+    await mailSender(email, emailTitle, emailBody);
+    console.log("Password updation email sent successfully!");
+
+    //return response
+    return res.status(200).json({
+      success: true,
+      message: "Password updated successfully !",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Cannot change password!",
+    });
+  }
+};
