@@ -174,7 +174,7 @@ exports,
   (logn = async (req, res) => {
     try {
       //fetch data from request.body
-      const { email, password } = request.body;
+      const { email, password } = req.body;
 
       //validate data
       if (!email || !password) {
@@ -237,7 +237,7 @@ exports.changePassword = async (req, res) => {
   try {
     //fetch data from body
     const { email, oldPassword, newPassword, confirmNewPassword } =
-      requeest.body;
+      req.body;
 
     //validation
     if (!email || !oldPassword || !newPassword || !confirmNewPassword) {
