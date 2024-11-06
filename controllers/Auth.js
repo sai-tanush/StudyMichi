@@ -198,7 +198,7 @@ exports,
         const payload = {
           email: user.email,
           id: user._id,
-          role: user.role,
+          role: user.accountType,
         };
         const token = jwt.sign(payload, process.env.JWT_SECRET, {
           expiresIn: "2h",
