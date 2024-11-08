@@ -50,10 +50,10 @@ exports.updateProfile = async (req, res) => {
 exports.deleteAccount = async (req, res) => {
   try {
     //fetch id
-    const { id } = req.user.id;
+    const id = req.user.id;
 
     //validate id
-    const userDetails = await USer.findById(id);
+    const userDetails = await User.findById(id);
     if (!userDetails) {
       return res.status(500).json({
         success: false,
