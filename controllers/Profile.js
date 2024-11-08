@@ -90,3 +90,35 @@ exports.deleteAccount = async (req, res) => {
     });
   }
 };
+
+//get AllUserDetails
+exports.getAllUserDetails = async (req, res) => {
+  try {
+    //get id
+    const id = req.user.id;
+
+    //validation and get user details
+    const userDetails = await User.findById(id)
+      .populate("additionalDetails")
+      .exec();
+
+    if (!userDetails) {
+      return res.status(400).json({
+        success: false,
+        message: "User not Found!",
+      });
+    }
+
+    //return response
+    return res.status(200).json({
+      success: true,
+      message: "Fetched all user details!",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Error while Fetching all user accounts",
+      error: error.message,
+    });
+  }
+};
