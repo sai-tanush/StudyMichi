@@ -39,7 +39,42 @@ exports.createSection = async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       success: false,
-      message: "Error ehile creating Section",
+      message: "Error while creating Section",
+      error: error.message,
+    });
+  }
+};
+
+exports.updateSection = async (req, res) => {
+  try {
+    //fetch data
+    const { sectionName, sectionId } = req.body;
+
+    //validate data
+    if (!sectionName || !sectionId) {
+      return res.status(400).json({
+        success: false,
+        message: "All fields are required",
+      });
+    }
+
+    //update data
+    const updatedSection = await Section.findByIdAndUpdate(
+      sectionId,
+      { sectionName },
+      { new: true }
+    );
+
+    //return response
+    return res.status(200).json({
+      success: true,
+      message: "Section updated successfully!",
+      updateCourseDetails,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Error while updating section",
       error: error.message,
     });
   }
