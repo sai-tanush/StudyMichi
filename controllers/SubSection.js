@@ -59,3 +59,26 @@ exports.createSubsection = async (req, res) => {
     });
   }
 };
+
+//delete a subSection
+exports.deleteSubSection = async (req, res) => {
+  try {
+    //fetch data
+    const { subSectionId } = req.params;
+
+    //use findByIdAndDelete
+    await SubSection.findByIdAndDelete(subSectionId);
+
+    //return response
+    return res.status(200).json({
+      success: true,
+      message: "subsection deleted Successfully!",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Error while creating a subsection",
+      error: error.message,
+    });
+  }
+};
