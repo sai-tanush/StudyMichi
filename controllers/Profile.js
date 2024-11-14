@@ -34,49 +34,36 @@ exports.updateProfile = async (req, res) => {
 };
 
 //delete Account
-
 exports.deleteAccount = async (req, res) => {
-  try {
-    //fetch id
-    const id = req.user.id;
-
-    //validate id
-    const userDetails = await User.findById(id);
-    if (!userDetails) {
-      return res.status(500).json({
-        success: false,
-        message: "User not found",
-      });
-    }
-
-    //delete profile
-    const deleteProfile = await Profile.findByIdAndDelete({
-      _id: userDetails.additionalDetails,
-    });
-    if (!deleteProfile) {
-      return res.status(400).json({
-        success: false,
-        message: "Error delete User Profile",
-      });
-    }
-
-    //delete user
-    await User.findByIdAndDelete({ _id: id });
-
-    //TODO: un-enroll user from all enrolled courses
-
-    //return response
-    return res.status(200).json({
-      success: true,
-      message: "User account deleted successfully!",
-    });
-  } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: "Error while Deleting Account",
-      error: error.message,
-    });
-  }
+	try {
+		// TODO: Find More on Job Schedule
+		// const job = schedule.scheduleJob("10 * * * * *", function () {
+		// 	console.log("The answer to life, the universe, and everything!");
+		// });
+		// console.log(job);
+		const id = req.user.id;
+		const user = await User.findById({ _id: id });
+		if (!user) {
+			return res.status(404).json({
+				success: false,
+				message: "User not found",
+			});
+		}
+		// Delete Assosiated Profile with the User
+		await Profile.findByIdAndDelete({ _id: user.userDetails });
+		// TODO: Unenroll User From All the Enrolled Courses
+		// Now Delete User
+		await user.findByIdAndDelete({ _id: id });
+		res.status(200).json({
+			success: true,
+			message: "User deleted successfully",
+		});
+	} catch (error) {
+		console.log(error);
+		res
+			.status(500)
+			.json({ success: false, message: "User Cannot be deleted successfully" });
+	}
 };
 
 //get AllUserDetails
