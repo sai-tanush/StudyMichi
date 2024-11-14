@@ -170,8 +170,7 @@ exports.sendOtp = async (req, res) => {
 };
 
 //login
-exports,
-  (logn = async (req, res) => {
+exports.login = async (req, res) => {
     try {
       //fetch data from request.body
       const { email, password } = req.body;
@@ -230,7 +229,7 @@ exports,
         message: "Login failure, Please try again!",
       });
     }
-  });
+  };
 
 //change Password
 exports.changePassword = async (req, res) => {
