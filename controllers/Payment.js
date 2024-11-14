@@ -88,3 +88,82 @@ exports.capturePayment = async (req, res) => {
     });
   }
 };
+
+//verify signature of razorpay and server
+exports.verifySignature = async(req, res) => {
+    
+    const webhookSecret = "123456789";
+    const signature = req.headers["x-razorpay-signature"];
+
+    const shasum = crypto.createHmac("sha256", webhookSecret);
+    shasum.update = (JSON.stringify(req.body));
+    const digest = shasum.digest("hex");
+
+    if(signature === digest) {
+        console.log("Payment is authorized");
+
+        const { courseId, userId } = req.body.payload.payment.entity.notes;
+
+        try{    
+            //fulfill the action -->
+
+            //--> find the course and enroll the student in it
+            const enrolledCourse = await Course.findOneAndUpdate(
+                {_id: courseId},
+                {$push: {studentEnrolled: userId}},
+                {new: true},
+            );
+
+            if(!enrolledCourse){
+                return res.status(400).json({
+                    success: false,
+                    message: 'Course not found!',
+                });
+            }
+            console.log(enrolledCourse);
+
+            //--> find the student and add the course to their enrolledCourse list
+            const enrolledStudent = User.findOneAndUpdate(
+                {_id: userId},
+                {$push: {
+                    courses: courseId
+                }},
+                {new: true},
+            )
+
+            if(!enrolledStudent) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Student not found!',
+                });
+            }
+
+            //send mail for confirmation course enrollment
+            const emailResponse = await mailSender(
+                enrolledStudent.email,
+                "Congratulations from StudyMichi",
+                "You are enrolled into new StudyMichi Course",
+            );
+
+            console.log(emailResponse);
+            
+            //return Successful Response
+            return res.status(200).json({
+                success: true,
+                message: 'Couse Purchased & Student enrolled in the same course',
+            });
+        }catch(error){
+            console.error(error);
+            return res.status(500).json({
+                success: false,
+                message: error.message,
+            });
+        }
+    }
+    else{
+        return res.status(500).json({
+            success: false,
+            message: 'Invalid request',
+        });
+    }
+};
