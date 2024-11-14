@@ -87,6 +87,7 @@ exports.updateSection = async (req, res) => {
   }
 };
 
+//delete a section
 exports.deleteSection = async (req, res) => {
   try {
     //fetch data
@@ -94,7 +95,6 @@ exports.deleteSection = async (req, res) => {
 
     //user findByIdAndDelete
     await Section.findByIdAndDelete(sectionId);
-    //do we need to delete the section id in course details?
 
     //return resposnse
     return res.status(200).json({
