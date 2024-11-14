@@ -1,6 +1,7 @@
 const Section = require("../models/Section");
 const Course = require("../models/Course");
 
+//create a new section
 exports.createSection = async (req, res) => {
   try {
     //fetch data
@@ -50,6 +51,7 @@ exports.createSection = async (req, res) => {
   }
 };
 
+//update a section
 exports.updateSection = async (req, res) => {
   try {
     //fetch data
