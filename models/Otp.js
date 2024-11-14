@@ -1,5 +1,6 @@
-import mailSender from "../utils/mailSender";
 const mongoose = require("mongoose");
+import mailSender from "../utils/mailSender";
+import emailTemplate from "../mail/templates/emailVerification";
 
 const otpSchema = new mongoose.Schema({
   email: {
@@ -13,7 +14,7 @@ const otpSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now(),
-    expires: 5 * 60,
+    expires: 60 * 5, //The document will automatically be deleted after 5 minutes of its creation time
   },
 });
 
@@ -22,9 +23,9 @@ async function sendVerificationEmail(email, otp) {
     const mailResponse = await mailSender(
       email,
       "Verification Email from StudyMichi",
-      otp
+      emailTemplate(otp)
     );
-    console.log("Email sent Successfully!", mailResponse);
+    console.log("Email sent Successfully!", mailResponse.response);
   } catch (error) {
     console.log("error occurred while sending mail", error.message);
     throw error;
