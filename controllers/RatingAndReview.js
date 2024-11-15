@@ -116,4 +116,39 @@ exports.getAverageRating = async (req, res) => {
   }
 };
 
-//getAllRating
+//getAllRatingAndReviews
+exports.getAllRating = async (req, res) => {
+  try {
+    const allRatings = await RatingAndReview.find({})
+      .sort({ rating: "desc" })
+      .populate({
+        path: "user",
+        select: "firstName lastName email image",
+      })
+      .populate({
+        path: "course",
+        select: "courseName",
+      })
+      .exec();
+
+    if (!allratings) {
+      return res.status(400).json({
+        success: false,
+        message: "No Ratings Found",
+      });
+    }
+
+    //return response
+    return res.status(200).json({
+      success: true,
+      message: "All ratings fetched successfully!",
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      messsage: "Error while fetching all ratings",
+      error: error.message,
+    });
+  }
+};
