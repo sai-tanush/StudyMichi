@@ -63,8 +63,8 @@ exports.createSubsection = async (req, res) => {
 exports.updateSubSection = async (req, res) => {
   try {
     //fetch data
-    const { subSectionId } = req.params;
-    const { title, timeDuration, description } = req.body;
+    const { title, sectionId, description } = req.body;
+    const subSectionId = await SubSection.findById(sectionId);
 
     //validate data
     if (!subSectionId) {
@@ -113,10 +113,25 @@ exports.updateSubSection = async (req, res) => {
 exports.deleteSubSection = async (req, res) => {
   try {
     //fetch data
-    const { subSectionId } = req.params;
+    const { subSectionId, sectionId } = req.body;
+    await Section.findByIdAndUpdate(
+      {_id: sectionId },
+      {
+        $pull: {
+          subSection: subSectionId,
+        },
+      }
+    )
 
     //use findByIdAndDelete
-    await SubSection.findByIdAndDelete(subSectionId);
+    const subSection =  await SubSection.findByIdAndDelete({_id: subSectionId});
+
+    //validation
+    if (!subSection) {
+      return res
+        .status(404)
+        .json({ success: false, message: "SubSection not found" })
+    }
 
     //return response
     return res.status(200).json({
