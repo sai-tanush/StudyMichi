@@ -83,7 +83,7 @@ exports.capturePayment = async (req, res) => {
     console.error(error);
     return res.status(500).json({
       success: false,
-      message: "Could not Enroll the student in the course",
+      message: "Could not initiate order!",
       error: error.message,
     });
   }
@@ -100,7 +100,7 @@ exports.verifySignature = async(req, res) => {
     const digest = shasum.digest("hex");
 
     if(signature === digest) {
-        console.log("Payment is authorized");
+        console.log("Payment is Authorized");
 
         const { courseId, userId } = req.body.payload.payment.entity.notes;
 

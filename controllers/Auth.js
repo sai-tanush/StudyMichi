@@ -33,6 +33,7 @@ exports.sendOtp = async (req, res) => {
 
     //check if otp is unique or not
     const result = await OTP.findOne({ otp: otp });
+    console.log("Result", result);
 
     while (result) {
       otp = otpGenerator.generate(6, {
@@ -90,7 +91,7 @@ exports.signUp = async (req, res) => {
       }
 
 
-      //match password
+      //compare password
       if(password !== confirmPassword) {
           return res.status(400).json({
               success:false,

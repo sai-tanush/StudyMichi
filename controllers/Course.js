@@ -177,7 +177,7 @@ exports.getCourseDetails = async (req, res) => {
       })
       .exec();
 
-    //courseId validation
+    //validation
     if (!courseDetails) {
       return res.status(400).json({
         success: false,

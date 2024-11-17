@@ -1,6 +1,6 @@
 const Category = require("../models/Category");
 
-//Create handler function for categories
+//createCategory handler function
 exports.createCategory = async (req, res) => {
   try {
     //fetch data
@@ -43,6 +43,8 @@ exports.showAllCategories = async (req, res) => {
       {},
       { name: true, description: true }
     );
+
+    //return response
     res.status(200).json({
       success: true,
       message: "All Categories fetched successfully",
@@ -60,6 +62,7 @@ exports.showAllCategories = async (req, res) => {
 //categoryPageDetails Handler function
 exports.categoryPageDetails = async (req, res) => {
   try {
+    //fetch categoryId from req.body
     const { categoryId } = req.body;
 
     // Get courses for the specified category
@@ -67,6 +70,7 @@ exports.categoryPageDetails = async (req, res) => {
       .populate("courses")
       .exec();
     console.log(selectedCategory);
+
     // Handle the case when the category is not found
     if (!selectedCategory) {
       console.log("Category not found.");
@@ -74,6 +78,7 @@ exports.categoryPageDetails = async (req, res) => {
         .status(404)
         .json({ success: false, message: "Category not found" });
     }
+
     // Handle the case when there are no courses
     if (selectedCategory.courses.length === 0) {
       console.log("No courses found for the selected category.");
@@ -101,6 +106,7 @@ exports.categoryPageDetails = async (req, res) => {
       .sort((a, b) => b.sold - a.sold)
       .slice(0, 10);
 
+    //return response
     res.status(200).json({
       success: true,
       data: {
