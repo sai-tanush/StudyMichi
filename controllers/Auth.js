@@ -3,6 +3,7 @@ const OTP = require("../models/Otp");
 const otpGenerator = require("otp-generator");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const Profile = require("../models/Profile");
 const mailSender = require("../utils/mailSender");
 require("dotenv").config();
 
@@ -10,7 +11,7 @@ require("dotenv").config();
 exports.sendOtp = async (req, res) => {
   try {
     //fetch email from request.body
-    const { email, body } = req.body;
+    const { email } = req.body;
 
     //check if user already exists
     const checkUserPresent = await User.findOne({ email });
@@ -24,31 +25,28 @@ exports.sendOtp = async (req, res) => {
     }
 
     //generate OTP
-    let otp = otpGenerator.generate(6, {
+    var otp = otpGenerator.generate(6, {
       upperCaseAlphabets: false,
       lowerCaseAlphabets: false,
       specialChars: false,
     });
-    console.log("OTP generated successfully! = ", otp);
 
     //check if otp is unique or not
     const result = await OTP.findOne({ otp: otp });
     console.log("Result", result);
+    console.log("OTP generated successfully! = ", otp);
 
     while (result) {
       otp = otpGenerator.generate(6, {
         upperCaseAlphabets: false,
-        lowerCaseAlphabets: false,
-        specialChars: false,
       });
-      result = await OTP.findOne({ otp: otp });
     }
 
     const otpPayload = { email, otp };
 
     //create entry for OTP in DB
     const otpBody = await OTP.create(otpPayload);
-    console.log(otpBody);
+    console.log("OTP Body", otpBody);
 
     //return successfull response
     res.status(200).json({
@@ -119,13 +117,13 @@ exports.signUp = async (req, res) => {
       .limit(1);
     console.log(recentOtp);
     //validate OTP
-    if (recentOtp.length == 0) {
+    if (recentOtp.length === 0) {
       //OTP not found
       return res.status(400).json({
         success: false,
-        message: "OTP Found",
+        message: "OTP is not valid",
       });
-    } else if (otp !== recentOtp.otp) {
+    } else if (otp !== recentOtp[0].otp) {
       //Invalid OTP
       return res.status(400).json({
         success: false,
@@ -157,7 +155,7 @@ exports.signUp = async (req, res) => {
       accountType: accountType,
       approved: approved,
       additionalDetails: profileDetails._id,
-      image: `https://api.dicebear.com/5.x/initials/svg?seed=${firstname} ${lastName}`,
+      image: `https://api.dicebear.com/5.x/initials/svg?seed=${firstName} ${lastName}`,
     });
 
     //return res
@@ -203,7 +201,7 @@ exports.login = async (req, res) => {
       const payload = {
         email: user.email,
         id: user._id,
-        role: user.accountType,
+        accountType: user.accountType,
       };
       const token = jwt.sign(payload, process.env.JWT_SECRET, {
         expiresIn: "24h",
