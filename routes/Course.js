@@ -85,3 +85,16 @@ router.get("/showAllCategories", showAllCategories);
 
 //get details of specific category
 router.post("/getCategoryPageDetails", categoryPageDetails);
+
+//Rating and Review routes --->
+
+//create rating
+router.post("/createRating", auth, isStudent, createRating);
+
+//get average rating
+router.get("/getAverageRating", getAverageRating);
+
+//get all the reviews
+router.get("/getReviews", getAllRating);
+
+module.exports = router;
