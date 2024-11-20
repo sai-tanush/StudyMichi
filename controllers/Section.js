@@ -1,6 +1,7 @@
 const Section = require("../models/Section");
 const Course = require("../models/Course");
 
+//create a new section
 exports.createSection = async (req, res) => {
   try {
     //fetch data
@@ -26,9 +27,14 @@ exports.createSection = async (req, res) => {
         },
       },
       { new: true }
-    );
-
-    //HW: use populate to replace sections/sub-sections both in the updatedCourseDetails
+    )
+    .populate({
+      path: "courseContent",
+      populate: {
+        path: "subSection",
+      },
+    })
+    .exec();
 
     //return response
     return res.status(200).json({
@@ -45,6 +51,7 @@ exports.createSection = async (req, res) => {
   }
 };
 
+//update a section
 exports.updateSection = async (req, res) => {
   try {
     //fetch data
@@ -80,6 +87,7 @@ exports.updateSection = async (req, res) => {
   }
 };
 
+//delete a section
 exports.deleteSection = async (req, res) => {
   try {
     //fetch data
@@ -87,7 +95,6 @@ exports.deleteSection = async (req, res) => {
 
     //user findByIdAndDelete
     await Section.findByIdAndDelete(sectionId);
-    //do we need to delete the section id in course details?
 
     //return resposnse
     return res.status(200).json({

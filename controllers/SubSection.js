@@ -4,8 +4,7 @@ const uploadImageToCloudinary = require("../utils/imageUploader");
 require("dotenv").config();
 
 //create a SubSection
-
-exports.createSubsection = async (req, res) => {
+exports.createSubSection = async (req, res) => {
   try {
     //fetch data from req.body
     const { sectionId, title, timeDuration, description } = req.body;
@@ -14,7 +13,7 @@ exports.createSubsection = async (req, res) => {
     const video = req.files.videoFile;
 
     //validation
-    if (!sectionId || !title || !timeDuration || !description) {
+    if (!sectionId || !title || !timeDuration || !description || !video) {
       return res.status(400).json({
         succes: false,
         message: "All fields are required",
@@ -27,7 +26,7 @@ exports.createSubsection = async (req, res) => {
       process.env.FOLDER_NAME
     );
 
-    //create a subsection
+    //create a new sub-section
     const subSectionDetails = await SubSection.create({
       title: title,
       timeDuration: timeDuration,
@@ -44,8 +43,7 @@ exports.createSubsection = async (req, res) => {
         },
       },
       { new: true }
-    );
-    //HW: log updated section here, after adding populate query
+    ).populate("subSection");
 
     //return response
     return res.status(200).json({
@@ -65,8 +63,8 @@ exports.createSubsection = async (req, res) => {
 exports.updateSubSection = async (req, res) => {
   try {
     //fetch data
-    const { subSectionId } = req.params;
-    const { title, timeDuration, description } = req.body;
+    const { title, sectionId, description } = req.body;
+    const subSectionId = await SubSection.findById(sectionId);
 
     //validate data
     if (!subSectionId) {
@@ -115,10 +113,25 @@ exports.updateSubSection = async (req, res) => {
 exports.deleteSubSection = async (req, res) => {
   try {
     //fetch data
-    const { subSectionId } = req.params;
+    const { subSectionId, sectionId } = req.body;
+    await Section.findByIdAndUpdate(
+      {_id: sectionId },
+      {
+        $pull: {
+          subSection: subSectionId,
+        },
+      }
+    )
 
     //use findByIdAndDelete
-    await SubSection.findByIdAndDelete(subSectionId);
+    const subSection =  await SubSection.findByIdAndDelete({_id: subSectionId});
+
+    //validation
+    if (!subSection) {
+      return res
+        .status(404)
+        .json({ success: false, message: "SubSection not found" })
+    }
 
     //return response
     return res.status(200).json({
