@@ -12,3 +12,23 @@ const {
 
 //import middleware
 const { auth } = require("../middlewares/auth");
+
+//Defining profile routes --->
+
+//Delete user account
+router.delete("/deleteProfile", deleteAccount);
+
+//update Profile details
+router.put("updateProfile", auth, updateProfile);
+
+//get user details
+router.get("/getUSerDetails", auth, getAllUserDetails);
+
+//get enrolled courses
+router.get("/getEnrolledCourses", auth, getEnrolledCourses);
+
+//update display picture
+router.put("/updateDisplayPicture", auth, updateDisplayPicture);
+
+module.exports = router;
+
