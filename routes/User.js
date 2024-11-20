@@ -10,12 +10,13 @@ const {
 } = require("../controllers/Auth");
 
 //import reset Password controllers
-const { resetPasswordToken, resetPassword } = required(
-  "../controllers/ResetPassword.js"
-);
+const {
+  resetPasswordToken,
+  resetPassword,
+} = require("../controllers/ResetPassword.js");
 
 //import middlewares
-const { auth } = required("../middlewares/auth.js");
+const { auth } = require("../middlewares/auth.js");
 
 //Routes for Login, SignUp and Authentication --->
 
@@ -25,10 +26,10 @@ const { auth } = required("../middlewares/auth.js");
 router.post("/login", login);
 
 //user signup
-router.post("/signup", signup);
+router.post("/signup", signUp);
 
 //send otp
-router.post("/sendotp", sendotp);
+router.post("/sendotp", sendOtp);
 
 //Reset-Password -->
 

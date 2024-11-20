@@ -18,4 +18,4 @@ router.post("/capturePayment", auth, isStudent, capturePayment);
 //verify signature
 router.post("/verifySignature", verifySignature);
 
-modules.exports = router;
+module.exports = router;

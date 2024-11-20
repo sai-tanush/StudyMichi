@@ -5,7 +5,7 @@ const router = express.Router();
 const {
   updateProfile,
   deleteAccount,
-  getALlUserDetails,
+  getAllUserDetails,
   updateDisplayPicture,
   getEnrolledCourses,
 } = require("../controllers/Profile");

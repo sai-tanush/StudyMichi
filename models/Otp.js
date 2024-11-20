@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
-import mailSender from "../utils/mailSender";
-import emailTemplate from "../mail/templates/emailVerification";
+const mailSender = require("../utils/mailSender");
+const emailTemplate = require("../mail/templates/emailVerification");
 
-const otpSchema = new mongoose.Schema({
+const OTPSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
@@ -34,11 +34,11 @@ async function sendVerificationEmail(email, otp) {
 }
 
 //Define a post-save hook to send email after the document has been saved
-OTPSchema.pre("save", async function(next) {
+OTPSchema.pre("save", async function (next) {
   console.log("New document saved to database");
 
   //Only send an email when new docu,emt is created
-  if(this.isNew){
+  if (this.isNew) {
     await sendVerificationEmail(this.email, this.otp);
   }
   next();

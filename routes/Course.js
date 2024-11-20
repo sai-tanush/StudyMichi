@@ -81,7 +81,7 @@ router.get("/getCourseDetails", getCourseDetails);
 router.post("/createCategory", auth, isAdmin, createCategory);
 
 //show all the categories available
-router.get("/showAllCategories", showAllCategories);
+router.get("/showAllCategories", getAllCategories);
 
 //get details of specific category
 router.post("/getCategoryPageDetails", categoryPageDetails);
