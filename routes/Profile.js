@@ -22,7 +22,7 @@ router.delete("/deleteProfile", deleteAccount);
 router.put("updateProfile", auth, updateProfile);
 
 //get user details
-router.get("/getUSerDetails", auth, getAllUserDetails);
+router.get("/getUserDetails", auth, getAllUserDetails);
 
 //get enrolled courses
 router.get("/getEnrolledCourses", auth, getEnrolledCourses);
