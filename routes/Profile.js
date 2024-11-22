@@ -16,7 +16,7 @@ const { auth } = require("../middlewares/auth");
 //Defining profile routes --->
 
 //Delete user account
-router.delete("/deleteProfile", deleteAccount);
+router.delete("/deleteProfile", auth, deleteAccount);
 
 //update Profile details
 router.put("/updateProfile", auth, updateProfile);
