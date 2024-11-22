@@ -34,7 +34,7 @@ router.post("/sendotp", sendOtp);
 //Reset-Password -->
 
 //change password
-router.post("/changepassword", auth, resetPasswordToken);
+router.post("/reset-password-token", auth, resetPasswordToken);
 
 //reset-password
 router.post("/reset-password", resetPassword);
