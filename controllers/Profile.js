@@ -42,6 +42,7 @@ exports.deleteAccount = async (req, res) => {
 		// 	console.log("The answer to life, the universe, and everything!");
 		// });
 		// console.log(job);
+    console.log("Printing user Id = ", req);
 		const id = req.user.id;
 		const user = await User.findById({ _id: id });
 		if (!user) {

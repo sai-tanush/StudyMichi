@@ -127,7 +127,7 @@ exports.signUp = async (req, res) => {
       //Invalid OTP
       return res.status(400).json({
         success: false,
-        message: "Invalid OTP",
+        message: "OTP is not valid",
       });
     }
 
