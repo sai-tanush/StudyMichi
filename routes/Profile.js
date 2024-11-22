@@ -19,7 +19,7 @@ const { auth } = require("../middlewares/auth");
 router.delete("/deleteProfile", deleteAccount);
 
 //update Profile details
-router.put("updateProfile", auth, updateProfile);
+router.put("/updateProfile", auth, updateProfile);
 
 //get user details
 router.get("/getUserDetails", auth, getAllUserDetails);
