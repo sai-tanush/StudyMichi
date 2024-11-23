@@ -95,12 +95,7 @@ exports.resetPassword = async (req, res) => {
       { password: hashPassword },
       { new: true }
     );
-
-    //return response
-    res.status(200).json({
-      success: true,
-      message: "Password changed successfully!",
-    });
+    
     //Check if token is invalid
     if (!userDetails) {
       return res.status(400).json({
