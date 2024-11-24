@@ -25,7 +25,7 @@ exports.sendOtp = async (req, res) => {
     }
 
     //generate OTP
-    var otp = otpGenerator.generate(6, {
+    let otp = otpGenerator.generate(6, {
       upperCaseAlphabets: false,
       lowerCaseAlphabets: false,
       specialChars: false,
