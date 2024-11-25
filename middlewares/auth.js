@@ -10,7 +10,7 @@ exports.auth = async (req, res, next) => {
       req.cookies.token ||
       req.body.token ||
       req.header("Authorisation").replace("Bearer ", "");
-
+    console.log("Token = ", token);
     if (!token) {
       return res.status(401).json({
         success: false,
@@ -21,8 +21,8 @@ exports.auth = async (req, res, next) => {
     //verify the token
     try {
       const decode = jwt.verify(token, process.env.JWT_SECRET);
-      console.log(decode);
-      req.user(decode);
+      console.log("Decode = ", decode);
+      req.user = decode;
     } catch (error) {
       return res.status(401).json({
         success: false,
@@ -60,7 +60,7 @@ exports.isStudent = async (req, res, next) => {
 //isInstructor
 exports.isInstructor = async (req, res, next) => {
   try {
-    if (req.user.accontType !== "Instructor") {
+    if (req.user.accountType !== "Instructor") {
       return res.status(401).json({
         success: false,
         message: "This is a protected route for Instructors only",
@@ -79,7 +79,8 @@ exports.isInstructor = async (req, res, next) => {
 //isAdmin
 exports.isAdmin = async (req, res, next) => {
   try {
-    if (req.user.accontType !== "Admin") {
+    console.log("User accountType = ", req.user.accountType);
+    if (req.user.accountType !== "Admin") {
       return res.status(401).json({
         success: false,
         message: "This is a protected route for Admins only",

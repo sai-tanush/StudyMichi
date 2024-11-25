@@ -1,11 +1,12 @@
 const Profile = require("../models/Profile");
 const User = require("../models/User");
+const { uploadImageToCloudinary } = require("../utils/imageUploader");
 require("dotenv").config();
 
 //update Profile
 exports.updateProfile = async (req, res) => {
 	try {
-		const { dateOfBirth = "", about = "", contactNumber } = req.body;
+		const { dateOfBirth = "", about = "", contactNumber, gender } = req.body;
 		const id = req.user.id;
 
 		// Find the profile by id
@@ -16,6 +17,7 @@ exports.updateProfile = async (req, res) => {
 		profile.dateOfBirth = dateOfBirth;
 		profile.about = about;
 		profile.contactNumber = contactNumber;
+    profile.gender = gender;
 
 		// Save the updated profile
 		await profile.save();
@@ -42,6 +44,7 @@ exports.deleteAccount = async (req, res) => {
 		// 	console.log("The answer to life, the universe, and everything!");
 		// });
 		// console.log(job);
+    console.log("Printing user Id = ", req.user.id);
 		const id = req.user.id;
 		const user = await User.findById({ _id: id });
 		if (!user) {
@@ -51,10 +54,10 @@ exports.deleteAccount = async (req, res) => {
 			});
 		}
 		// Delete Assosiated Profile with the User
-		await Profile.findByIdAndDelete({ _id: user.userDetails });
+		await Profile.findByIdAndDelete({ _id: user.additionalDetails });
 		// TODO: Unenroll User From All the Enrolled Courses
 		// Now Delete User
-		await user.findByIdAndDelete({ _id: id });
+		await User.findByIdAndDelete({ _id: id });
 		res.status(200).json({
 			success: true,
 			message: "User deleted successfully",
@@ -63,7 +66,7 @@ exports.deleteAccount = async (req, res) => {
 		console.log(error);
 		res
 			.status(500)
-			.json({ success: false, message: "User Cannot be deleted successfully" });
+			.json({ success: false, message: "User Cannot be deleted!" });
 	}
 };
 

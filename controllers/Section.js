@@ -17,6 +17,7 @@ exports.createSection = async (req, res) => {
 
     //create section
     const newSection = await Section.create({ sectionName });
+    console.log("New Section = ", newSection);
 
     //update course with section objectID
     const updateCourseDetails = await Course.findByIdAndUpdate(
@@ -76,7 +77,7 @@ exports.updateSection = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "Section updated successfully!",
-      updateCourseDetails,
+      updatedSection,
     });
   } catch (error) {
     return res.status(500).json({
@@ -91,7 +92,7 @@ exports.updateSection = async (req, res) => {
 exports.deleteSection = async (req, res) => {
   try {
     //fetch data
-    const { sectionId } = req.params;
+    const { sectionId } = req.body;
 
     //user findByIdAndDelete
     await Section.findByIdAndDelete(sectionId);

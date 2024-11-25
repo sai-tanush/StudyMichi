@@ -1,5 +1,5 @@
 const Course = require("../models/Course");
-const Tag = require("../models/Tags");
+const Category = require("../models/Category");
 const User = require("../models/User");
 const { uploadImageToCloudinary } = require("../utils/imageUploader");
 
@@ -191,7 +191,6 @@ exports.getCourseDetails = async (req, res) => {
       message: "Course details fetched successfully!",
       data: courseDetails,
     });
-	
   } catch (error) {
     console.error(error);
     return res.status(500).json({
