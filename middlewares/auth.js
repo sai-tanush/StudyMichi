@@ -9,12 +9,12 @@ exports.auth = async (req, res, next) => {
     const token =
       req.cookies.token ||
       req.body.token ||
-      req.header("Authorisation")?.replace("Bearer ", "");
+      req.header("Authorization")?.replace("Bearer ", "");
     console.log("Token = ", token);
     if (!token) {
       return res.status(401).json({
         success: false,
-        message: "Token is missing",
+        message: "Token is missing in auth backend",
       });
     }
 
