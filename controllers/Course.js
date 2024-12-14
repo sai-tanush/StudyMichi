@@ -21,8 +21,19 @@ exports.createCourse = async (req, res) => {
       instructions,
     } = req.body;
 
+    //console.log("Request.body in backend = ", req.body);
+
     // Get thumbnail image from request files
     const thumbnail = req.files.thumbnailImage;
+
+    //logging every fields
+    console.log("courseName", courseName);
+    console.log("courseDescription", courseDescription);
+    console.log("courseBenefits", whatYouWillLearn);
+    console.log("coursePrice", price);
+    console.log("courseTag", tag);
+    console.log("courseThumbnail", thumbnail);
+    console.log("courseCategory", category);
 
     // Check if any of the required fields are missing
     if (
@@ -99,7 +110,7 @@ exports.createCourse = async (req, res) => {
       { _id: category },
       {
         $push: {
-          course: newCourse._id,
+          courses: newCourse._id,
         },
       },
       { new: true }
@@ -168,7 +179,7 @@ exports.getCourseDetails = async (req, res) => {
         },
       })
       .populate("category")
-      .populate("ratingAndreviews")
+      // .populate("ratingAndreviews")
       .populate({
         path: "courseContent",
         populate: {
