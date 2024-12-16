@@ -8,7 +8,10 @@ const {
   createCourse,
   getAllCourses,
   getCourseDetails,
-  editCourse
+  editCourse,
+  getInstructorCourses,
+  getFullCourseDetails,
+  deleteCourse
 } = require("../controllers/Course");
 
 //--> import category controllers
