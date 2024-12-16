@@ -79,6 +79,9 @@ router.get("/getAllCourses", getAllCourses);
 //get details of specific courses
 router.get("/getCourseDetails", getCourseDetails);
 
+// Get Details for a Specific Courses
+router.post("/getFullCourseDetails", auth, getFullCourseDetails)
+
 //Category routes---> ( Categories operations can only be done by Admin )
 
 //create category
