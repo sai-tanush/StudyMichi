@@ -144,7 +144,7 @@ exports.deleteSubSection = async (req, res) => {
     //fetch data
     const { subSectionId, sectionId } = req.body;
 
-    if ( !sectionId || subSectionId ) {
+    if ( !sectionId || !subSectionId ) {
       return res.status(400).json({
         success: false,
         message: "All fields are necessary!",
