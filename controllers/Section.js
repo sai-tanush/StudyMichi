@@ -65,13 +65,14 @@ exports.createSection = async (req, res) => {
 exports.updateSection = async (req, res) => {
   try {
     //fetch data
-    const { sectionName, sectionId, courseId } = req.body;
+    const { sectionName, sectionId, courseId } = req.body
+    
 
     //validate data
-    if (!sectionName || !sectionId || courseId) {
+    if (!sectionName || !sectionId || !courseId) {
       return res.status(400).json({
         success: false,
-        message: "All fields are required",
+        message: "All fields are required in updateSection",
       });
     }
 
