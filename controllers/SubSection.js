@@ -67,7 +67,13 @@ exports.updateSubSection = async (req, res) => {
     //fetch data
     const { title, sectionId, description, subSectionId } = req.body;
 
-    if (!title || !sectionId || !description || subSectionId ) {
+    console.log("updateSubSection was called");
+    console.log("title = ", title);
+    console.log("description = ", description);
+    console.log("sectionId = ", sectionId);
+    console.log("subSectionId = ", subSectionId);
+
+    if (!title || !sectionId || !description || !subSectionId ) {
       return res.status(400).json({
         success: false,
         message: "All fields are necessary!",
@@ -108,7 +114,7 @@ exports.updateSubSection = async (req, res) => {
     //update data
     const updatedSection = await Section.findById(sectionId).populate("subSection");
 
-    consoel.log("updatedSection after updating SubSection = ", updatedSection);
+    console.log("updatedSection after updating SubSection = ", updatedSection);
 
     if (!updatedSection) {
       return res.status(404).json({
