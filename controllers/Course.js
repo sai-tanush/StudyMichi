@@ -147,6 +147,14 @@ exports.editCourse = async (req, res) => {
       })
     }
 
+    if(!updates){
+      return res.status(400).json({
+        success: false,
+        message: "updates field is empty in editCourse",
+        error: error.message
+      })
+    }
+
     // If Thumbnail Image is found, update it
     if (req.files) {
       console.log("thumbnail update")
