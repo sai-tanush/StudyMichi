@@ -25,8 +25,6 @@ exports.createSubSection = async (req, res) => {
       video,
       process.env.FOLDER_NAME
     );
-    console.log("cloudinary upload Details of video in createSubSection = ", uploadDetails);
-
     //create a new sub-section
     const subSectionDetails = await SubSection.create({
       title: title,
@@ -40,13 +38,13 @@ exports.createSubSection = async (req, res) => {
       { _id: sectionId },
       {
         $push: {
-          subSection: SubSectionDetails._id,
+          subSection: subSectionDetails._id,
         },
       },
       { new: true }
     ).populate("subSection");
 
-    console.log("updatedSection after creating new SUbSection = ", updateSection);
+    console.log("updatedSection after creating new SubSection = ", updateSection);
 
     //return response
     return res.status(200).json({
