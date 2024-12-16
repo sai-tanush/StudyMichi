@@ -61,6 +61,9 @@ router.post("/editCourse", auth, isInstructor, editCourse)
 //Update a Section
 router.post("/updateSection", auth, isInstructor, updateSection);
 
+// Delete a Course
+router.delete("/deleteCourse", deleteCourse)
+
 //Delete a section
 router.post("/deleteSection", auth, isInstructor, deleteSection);
 
