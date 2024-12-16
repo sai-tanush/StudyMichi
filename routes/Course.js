@@ -8,6 +8,7 @@ const {
   createCourse,
   getAllCourses,
   getCourseDetails,
+  editCourse
 } = require("../controllers/Course");
 
 //--> import category controllers
@@ -53,6 +54,9 @@ router.post("/createCourse", auth, isInstructor, createCourse);
 
 //Add a section to course
 router.post("/addSection", auth, isInstructor, createSection);
+
+// Edit Course routes
+router.post("/editCourse", auth, isInstructor, editCourse)
 
 //Update a Section
 router.post("/updateSection", auth, isInstructor, updateSection);
