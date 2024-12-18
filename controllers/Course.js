@@ -1,9 +1,11 @@
 const Course = require("../models/Course");
+const CourseProgress = require("../models/CourseProgress");
 const Category = require("../models/Category");
 const Section = require("../models/Section");
 const SubSection = require("../models/SubSection");
 const User = require("../models/User");
 const { uploadImageToCloudinary } = require("../utils/imageUploader");
+const { convertSecondsToDuration } = require("../utils/secToDuration");
 
 //createCourse Handler
 exports.createCourse = async (req, res) => {
@@ -191,7 +193,7 @@ exports.editCourse = async (req, res) => {
         },
       })
       .populate("category")
-      .populate("ratingAndReviews")
+      //.populate("ratingAndReviews")
       .populate({
         path: "courseContent",
         populate: {
@@ -309,7 +311,7 @@ exports.getFullCourseDetails = async (req, res) => {
         },
       })
       .populate("category")
-      .populate("ratingAndReviews")
+      //.populate("ratingAndReviews")
       .populate({
         path: "courseContent",
         populate: {
@@ -330,13 +332,15 @@ exports.getFullCourseDetails = async (req, res) => {
       userId: userId,
     })
 
-    if(!courseProgressCount){
-      return res.status(400).json({
-        success: false,
-        message: "Could not find user",
-        error: error.message
-      })
-    }
+    // console.log("userId", userId);
+    // console.log("courseId", courseId);
+
+    // if(!courseProgressCount){
+    //   return res.status(400).json({
+    //     success: false,
+    //     message: "Could not find user",
+    //   })
+    // }
 
     console.log("courseProgressCount : ", courseProgressCount)
 
