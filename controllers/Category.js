@@ -1,5 +1,10 @@
 const Category = require("../models/Category");
 
+//fetch random function
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max)
+}
+
 //createCategory handler function
 exports.createCategory = async (req, res) => {
   try {
@@ -77,7 +82,7 @@ exports.categoryPageDetails = async (req, res) => {
         .populate({
           path: "courses",
           match: { status: "Published" },
-          populate: "ratingAndReviews",
+          //populate: "ratingAndReviews",
         })
         .exec()
 
