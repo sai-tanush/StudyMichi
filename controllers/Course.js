@@ -254,6 +254,16 @@ exports.getCourseDetails = async (req, res) => {
   try {
     //fetch courseId from req.body
     const { courseId } = req.body;
+    console.log("req.body in getCourseDetails = ", req.body);
+
+    console.log("courseId in getCourseDetails controller = ", courseId);
+
+    if(!courseId){
+      return res.status(400).json({
+        success: false,
+        message: "courseId is required"
+      })
+    }
 
     //find course details
     const courseDetails = await Course.find({ _id: courseId })
@@ -280,6 +290,8 @@ exports.getCourseDetails = async (req, res) => {
         message: "Could not find the course",
       });
     }
+
+    console.log("Course Details = ", courseDetails);
 
     //return successful response
     return res.status(200).json({
