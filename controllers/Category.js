@@ -67,8 +67,11 @@ exports.getAllCategories = async (req, res) => {
 //categoryPageDetails Handler function
 exports.categoryPageDetails = async (req, res) => {
   try {
+
     //fetch categoryId from req.body
     const { categoryId } = req.body;
+    console.log("categoryId in categoryPageDetails in BE = ", categoryId);
+    
 
     if(!categoryId){
       return res.status(400).json({
@@ -86,7 +89,7 @@ exports.categoryPageDetails = async (req, res) => {
         })
         .exec()
 
-    console.log("selectedCategory in categoryPageDetails = ", selectedCategory);
+    //console.log("selectedCategory in categoryPageDetails = ", selectedCategory);
 
     // Handle the case when the category is not found
     if (!selectedCategory) {
@@ -119,7 +122,7 @@ exports.categoryPageDetails = async (req, res) => {
       })
       .exec()
 
-      console.log("Different COURSE", differentCategory)
+      //console.log("Different COURSE", differentCategory)
 
     // Get top-selling courses across all categories
     const allCategories = await Category.find()
@@ -138,13 +141,14 @@ exports.categoryPageDetails = async (req, res) => {
       .slice(0, 10);
 
     console.log("mostSellingCourses COURSE", mostSellingCourses);
-    
+
     //return response
     res.status(200).json({
       success: true,
+      message: "fetched Category Page Details",
       data: {
-        selectedCourses,
-        differentCourses,
+        selectedCategory,
+        differentCategory,
         mostSellingCourses,
       },
     });
