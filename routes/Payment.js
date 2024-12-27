@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 //import payment controllers
-const { capturePayment, verifySignature } = require("../controllers/Payment");
+const { capturePayment, verifyPayment, sendPaymentSuccessEmail } = require("../controllers/Payment");
 
 //import middlewares
 const {
@@ -16,6 +16,9 @@ const {
 router.post("/capturePayment", auth, isStudent, capturePayment);
 
 //verify signature
-router.post("/verifySignature", verifySignature);
+router.post("/verifyPayment", auth, isStudent, verifyPayment);
 
-module.exports = router;
+//send email after payment
+router.post("/sendPaymentSuccessEmail", auth, isStudent, sendPaymentSuccessEmail);
+
+module.exports = router; 
