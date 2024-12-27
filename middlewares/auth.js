@@ -10,7 +10,7 @@ exports.auth = async (req, res, next) => {
       req.cookies.token ||
       req.body.token ||
       req.header("Authorization")?.replace("Bearer ", "");
-    console.log("Token = ", token);
+    console.log("Token in auth = ", token);
     if (!token) {
       return res.status(401).json({
         success: false,
@@ -42,7 +42,7 @@ exports.auth = async (req, res, next) => {
 //isStudent
 exports.isStudent = async (req, res, next) => {
   try {
-    if (req.user.accontType !== "Student") {
+    if (req.user.accountType !== "Student") {
       return res.status(401).json({
         success: false,
         message: "This is a protected route for Students only",
