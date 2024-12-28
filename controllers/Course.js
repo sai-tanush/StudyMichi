@@ -279,7 +279,7 @@ exports.getCourseDetails = async (req, res) => {
         path: "courseContent",
         populate: {
           path: "subSection",
-          select: "timeDuration videoUrl  "
+          select: "timeDuration videoUrl description title"
         },
       })
       .exec();
