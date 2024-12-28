@@ -266,7 +266,7 @@ exports.getCourseDetails = async (req, res) => {
     }
 
     //find course details
-    const courseDetails = await Course.find({ _id: courseId })
+    const courseDetails = await Course.findOne({ _id: courseId })
       .populate({
         path: "instructor",
         populate: {
@@ -274,15 +274,17 @@ exports.getCourseDetails = async (req, res) => {
         },
       })
       .populate("category")
-      .populate("ratingAndreviews")
+      .populate("ratingAndReview")
       .populate({
         path: "courseContent",
         populate: {
           path: "subSection",
-          select: "-videoUrl  "
+          select: "timeDuration videoUrl  "
         },
       })
       .exec();
+
+    console.log("Course Details = ", courseDetails);
 
     //validation
     if (!courseDetails) {
@@ -293,8 +295,8 @@ exports.getCourseDetails = async (req, res) => {
     }
 
     let totalDurationInSeconds = 0
-    courseDetails.courseContent.forEach((content) => {
-      content.subSection.forEach((subSection) => {
+    courseDetails.courseContent.forEach((section) => {
+      section.subSection.forEach((subSection) => {
         const timeDurationInSeconds = parseInt(subSection.timeDuration)
         totalDurationInSeconds += timeDurationInSeconds
       })
@@ -337,7 +339,7 @@ exports.getFullCourseDetails = async (req, res) => {
         },
       })
       .populate("category")
-      //.populate("ratingAndReviews")
+      .populate("ratingAndReview")
       .populate({
         path: "courseContent",
         populate: {
