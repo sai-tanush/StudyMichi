@@ -42,6 +42,11 @@ const {
   getAllRating,
 } = require("../controllers/RatingAndReview");
 
+//--> import courseProgress controller
+const { 
+  updateCourseProgress
+} = require("../controllers/CourseProgress");
+
 //--> import middlewares
 const {
   auth,
@@ -90,6 +95,9 @@ router.post("/getFullCourseDetails", auth, getFullCourseDetails)
 
 // Get all Courses Under a Specific Instructor
 router.get("/getInstructorCourses", auth, isInstructor, getInstructorCourses)
+
+//Update course Progress
+//router.post("/updateCourseProgress", auth, isStudent, updateCourseProgress)
 
 //Category routes---> ( Categories operations can only be done by Admin )
 
