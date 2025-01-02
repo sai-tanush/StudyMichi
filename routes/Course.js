@@ -97,7 +97,7 @@ router.post("/getFullCourseDetails", auth, getFullCourseDetails)
 router.get("/getInstructorCourses", auth, isInstructor, getInstructorCourses)
 
 //Update course Progress
-//router.post("/updateCourseProgress", auth, isStudent, updateCourseProgress)
+router.post("/updateCourseProgress", auth, isStudent, updateCourseProgress);
 
 //Category routes---> ( Categories operations can only be done by Admin )
 
