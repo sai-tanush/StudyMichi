@@ -140,7 +140,7 @@ exports.getAllRating = async (req, res) => {
       })
       .exec();
 
-    if (!allratings) {
+    if (!allRatings) {
       return res.status(400).json({
         success: false,
         message: "No Ratings Found",
@@ -151,6 +151,7 @@ exports.getAllRating = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "All ratings fetched successfully!",
+      data: allRatings,
     });
   } catch (error) {
     console.error(error);
