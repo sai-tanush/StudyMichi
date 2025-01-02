@@ -2,6 +2,7 @@ const Profile = require("../models/Profile");
 const User = require("../models/User");
 const CourseProgress = require("../models/CourseProgress");
 const { uploadImageToCloudinary } = require("../utils/imageUploader");
+const { convertSecondsToDuration } = require("../utils/secToDuration");
 require("dotenv").config();
 
 //update Profile
@@ -137,7 +138,7 @@ exports.updateDisplayPicture = async (req, res) => {
 exports.getEnrolledCourses = async (req, res) => {
     try {
       const userId = req.user.id
-      const userDetails = await User.findOne({
+      let userDetails = await User.findOne({
         _id: userId,
       })
         .populate({
@@ -195,7 +196,8 @@ exports.getEnrolledCourses = async (req, res) => {
     } catch (error) {
       return res.status(500).json({
         success: false,
-        message: error.message,
+        error: error.message,
+        message:"Could not fetch user enrolledCourses"
       })
     }
 };
