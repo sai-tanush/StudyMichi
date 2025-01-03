@@ -10,24 +10,13 @@ exports.createRating = async (req, res) => {
     //fetchdata from req body
     const { courseId, rating, review } = req.body.data;
 
-    console.log("req.body.data in createrating = ", req.body.data);
-
-    console.log("userId = ", userId);
-    console.log("rating = ", rating);
-    console.log("review = ", review);
-    console.log("courseId = ", courseId);
-
     const onlyCourseDetails = await Course.findById(courseId);
-
-    console.log("onlyCourseDetails = ", onlyCourseDetails);
 
     //check if user is enrolled or not
     const courseDetails = await Course.findOne({
       _id: courseId,
       studentEnrolled: { $elemMatch: { $eq: userId } },
     });
-
-    console.log("courseDetails = ", courseDetails);
 
     if (!courseDetails) {
       return res.status(404).json({
@@ -64,7 +53,6 @@ exports.createRating = async (req, res) => {
       },
       { new: true }
     );
-    console.log(updatedCourseDetails);
     //return response
     return res.status(200).json({
       success: true,
@@ -72,7 +60,6 @@ exports.createRating = async (req, res) => {
       ratingReview,
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       success: false,
       message: error.message,
@@ -116,7 +103,6 @@ exports.getAverageRating = async (req, res) => {
         "Average rating is 0, no rating/review upload by any enrolled user",
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       success: false,
       message: "Error fetching average Rating of the course",

@@ -26,16 +26,13 @@ async function sendVerificationEmail(email, otp) {
       "Verification Email from StudyMichi",
       emailTemplate(otp)
     );
-    console.log("Email sent Successfully!", mailResponse);
   } catch (error) {
-    console.log("error occurred while sending mail", error.message);
     throw error;
   }
 }
 
 //Define a post-save hook to send email after the document has been saved
 OTPSchema.pre("save", async function (next) {
-  console.log("New document saved to database");
 
   //Only send an email when new documemt is created
   if (this.isNew) {

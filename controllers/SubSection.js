@@ -44,8 +44,6 @@ exports.createSubSection = async (req, res) => {
       { new: true }
     ).populate("subSection");
 
-    console.log("updatedSection after creating new SubSection = ", updateSection);
-
     //return response
     return res.status(200).json({
       success: true,
@@ -66,12 +64,6 @@ exports.updateSubSection = async (req, res) => {
   try {
     //fetch data
     const { title, sectionId, description, subSectionId } = req.body;
-
-    console.log("updateSubSection was called");
-    console.log("title = ", title);
-    console.log("description = ", description);
-    console.log("sectionId = ", sectionId);
-    console.log("subSectionId = ", subSectionId);
 
     if (!title || !sectionId || !description || !subSectionId ) {
       return res.status(400).json({
@@ -113,8 +105,6 @@ exports.updateSubSection = async (req, res) => {
 
     //update data
     const updatedSection = await Section.findById(sectionId).populate("subSection");
-
-    console.log("updatedSection after updating SubSection = ", updatedSection);
 
     if (!updatedSection) {
       return res.status(404).json({
@@ -178,7 +168,6 @@ exports.deleteSubSection = async (req, res) => {
     }
 
     const updatedSection = await Section.findById(sectionId).populate("subSection");
-    console.log("updatedSection data after deleting subSection = ", updatedSection);
 
     //return response
     return res.status(200).json({

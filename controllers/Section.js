@@ -8,9 +8,6 @@ exports.createSection = async (req, res) => {
     //fetch data
     const { sectionName, courseId } = req.body;
 
-    console.log("sectionName = ", sectionName);
-    console.log("courseId = ", courseId);
-
     //validate data
     if (!sectionName || !courseId) {
       return res.status(400).json({
@@ -21,7 +18,6 @@ exports.createSection = async (req, res) => {
 
     //create section
     const newSection = await Section.create({ sectionName });
-    console.log("New Section = ", newSection);
 
     //update course with section objectID
     const updateCourseDetails = await Course.findByIdAndUpdate(
@@ -40,11 +36,6 @@ exports.createSection = async (req, res) => {
         },
       })
       .exec();
-
-    console.log(
-      "Updated CourseDetails after creating Section = ",
-      updateCourseDetails
-    );
 
     //return response
     return res.status(200).json({
@@ -83,8 +74,6 @@ exports.updateSection = async (req, res) => {
       { new: true }
     );
 
-    console.log(" details after updating Section = ", updatedSection);
-
     const updatedCourse = await Course.findById(courseId)
       .populate({
         path: "courseContent",
@@ -94,7 +83,6 @@ exports.updateSection = async (req, res) => {
       })
       .exec();
 
-    console.log(" updatedCourse after updating Course  = ", updatedCourse);
 
     //return response
     return res.status(200).json({
@@ -154,11 +142,6 @@ exports.deleteSection = async (req, res) => {
         },
       })
       .exec();
-
-    console.log(
-      " updated courseDetails after deleting a section = ",
-      updatedCourseDetails
-    );
 
     //return resposnse
     return res.status(200).json({

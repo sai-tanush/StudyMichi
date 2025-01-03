@@ -24,7 +24,6 @@ exports.resetPasswordToken = async (req, res) => {
 			},
 			{ new: true }
 		);
-		console.log("DETAILS", updatedDetails);
 
 		const url = `http://localhost:3000/update-password/${token}`;
 
@@ -64,8 +63,6 @@ exports.resetPassword = async (req, res) => {
 
     //get userdetails from db using token
     const userDetails = await User.findOne({ token: token });
-    console.log("User details = ", userDetails);
-    console.log("User Details.resetPasswordExpires? = ", userDetails.resetPasswordExpires);
 
     //Check if token is invalid
     if (!userDetails) {
@@ -76,9 +73,7 @@ exports.resetPassword = async (req, res) => {
     }
 
     //check for token expiration time
-    console.log("Date now() => ", Date.now());
     const expirationTime = new Date(userDetails.resetPasswordExpires).getTime();
-    console.log("Token Expiration time = ", expirationTime);
     if (expirationTime < Date.now()) {
       return res.status(400).json({
         success: false,
@@ -128,7 +123,6 @@ exports.resetPassword = async (req, res) => {
       message: "Password changed successfully!",
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       success: false,
       message: "Error while Password reset",

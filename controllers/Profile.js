@@ -31,7 +31,6 @@ exports.updateProfile = async (req, res) => {
 			profile,
 		});
 	} catch (error) {
-		console.log(error);
 		return res.status(500).json({
 			success: false,
 			error: error.message,
@@ -42,12 +41,6 @@ exports.updateProfile = async (req, res) => {
 //delete Account
 exports.deleteAccount = async (req, res) => {
 	try {
-		// TODO: Find More on Job Schedule
-		// const job = schedule.scheduleJob("10 * * * * *", function () {
-		// 	console.log("The answer to life, the universe, and everything!");
-		// });
-		// console.log(job);
-    console.log("Printing user Id = ", req.user.id);
 		const id = req.user.id;
 		const user = await User.findById({ _id: id });
 		if (!user) {
@@ -66,7 +59,6 @@ exports.deleteAccount = async (req, res) => {
 			message: "User deleted successfully",
 		});
 	} catch (error) {
-		console.log(error);
 		res
 			.status(500)
 			.json({ success: false, message: "User Cannot be deleted!" });
@@ -116,7 +108,6 @@ exports.updateDisplayPicture = async (req, res) => {
         1000,
         1000
       )
-      console.log(image)
       const updatedProfile = await User.findByIdAndUpdate(
         { _id: userId },
         { image: image.secure_url },
@@ -227,7 +218,7 @@ exports.instructorDashboard = async (req, res) => {
         return courseDataWithStats
       })
 
-      console.log("courseData = ", courseData);
+
 
       return res.status(200).json({
         success: true,
